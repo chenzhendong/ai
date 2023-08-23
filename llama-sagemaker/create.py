@@ -1,5 +1,6 @@
 import sagemaker
 import boto3
+import os
 import json
 from sagemaker.huggingface import get_huggingface_llm_image_uri
 from sagemaker.huggingface import HuggingFaceModel
@@ -72,7 +73,7 @@ llm = llm_model.deploy(
 )
 
 
-# print("Endpoint name:", llm)
+print("Endpoint type:", type(llm))
 
 # # Set up boto3 client for SSM
 # ssm_client = boto3.client('ssm')
@@ -83,7 +84,7 @@ llm = llm_model.deploy(
 # # Save the endpoint value to Parameter Store
 # ssm_client.put_parameter(
 #     Name=parameter_key,
-#     Value=llm,
+#     Value=json.dump(llm),
 #     Type='String',
 #     Overwrite=True
 # )

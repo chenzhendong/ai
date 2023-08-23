@@ -24,12 +24,12 @@ messages = [
 
 
 llm = Predictor(
-    endpoint_name="huggingface-pytorch-tgi-inference-2023-08-22-17-12-28-521",
+    endpoint_name="huggingface-pytorch-tgi-inference-2023-08-23-01-46-13-498",
     serializer=JSONSerializer(),
     deserializer=JSONDeserializer())
 
 # define question and add to messages
-instruction = "What are some cool ideas to do in the summer?"
+instruction = "What are some cool ideas to visit the Washington DC?"
 messages.append({"role": "user", "content": instruction})
 prompt = build_llama2_prompt(messages)
 
