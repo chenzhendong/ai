@@ -1,7 +1,4 @@
-import sagemaker
-import boto3
-import os
-import json
+import sagemaker, boto3, os, json
 from sagemaker.huggingface import get_huggingface_llm_image_uri
 from sagemaker.huggingface import HuggingFaceModel
 from dotenv import load_dotenv
@@ -72,19 +69,18 @@ llm = llm_model.deploy(
   container_startup_health_check_timeout=health_check_timeout, # 10 minutes to be able to load the model
 )
 
+print("Endpoint Name:", llm.endpoint_name)
 
-print("Endpoint type:", type(llm))
+# Set up boto3 client for SSM
+ssm_client = boto3.client('ssm')
 
-# # Set up boto3 client for SSM
-# ssm_client = boto3.client('ssm')
+# Define the Parameter Store key
+parameter_key = os.getenv('ENDPOINT_NAME')
 
-# # Define the Parameter Store key
-# parameter_key = "/com/commoninf/zchen/sagemaker/endpoint1"
-
-# # Save the endpoint value to Parameter Store
-# ssm_client.put_parameter(
-#     Name=parameter_key,
-#     Value=json.dump(llm),
-#     Type='String',
-#     Overwrite=True
-# )
+# Save the endpoint value to Parameter Store
+ssm_client.put_parameter(
+    Name=parameter_key,
+    Value=llm.endpoint_name,
+    Type='String',
+    Overwrite=True
+)
